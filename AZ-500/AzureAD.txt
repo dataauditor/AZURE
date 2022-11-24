@@ -1,0 +1,112 @@
+Genel AzAD:
+- credentialslar ile
+  - client'lara girilebilir.
+  - apps'lara ulasilir.
+- AD, subscriotion kapsaminda user/group ile resource arasinda ulasimi saglar. Baska AD'ler de eklenebilir.
+
+
+1.Manage Security Defaults:
+- Her defasinda mail ile "verify your identy" yapar.
+> AD > Properties > Manage Security defaults
+  > Yes
+  > Save
+
+
+2.Group:
+a.Group Olusturma:
+> AD > Groups > New Group
+  > Group type: Security
+  > Group name: ...
+  > Azure AD roles can be assigned to the group: No
+  > Membership type: Assigned
+  > Create
+
+> Altenatif olarak:
+  > Membership type: Dynamic User
+    > Add dynamic query
+    > Property: city | Operator: Contains | Value: Istanbul
+      - Istanbul olanlar otomatik olarak bu gruba katilirlar.
+      - User'lari Edit edip City'lerini degistiririz. 10-15 dk gerekir.
+  > Create
+
+
+a.Group type:
+- Azure AD, Hem Azure hem de Microsoft 365 icin Identity provider gorevi gorebilir,
+  - Security	 : Azure resource'lar icin identity provider.
+  - Microsoft 365: Microsoft 365 icin identity provider.
+- Iki farkli gruptan birinde Security digerinde Microsoft 365 secip, bu iki gruba da ayni kisileri atarsaniz iki tarafa da ulasabilirler.
+
+
+b.Membership type:
+- Assigned	: Dogrudan atariz. 
+- Dynamic User	: Azure AD Premium P2 lisansi gerekir.
+- Dynamic Device:
+
+
+c.Members:
+- Group'un mevcut Userlarini gosterir.
+> AD > Groups > A-group
+  > Members
+
+
+d.Restoring Groups and Users:
+- UserA silersek 30 gun icinde restore edebiliriz.
+- Yalnizca Microsoft 365 grouplarini 30 gun icinde restore edebiliriz. Security grouplari restore edilemezler.
+> AD > Users > Deleted Users
+  > UserA
+  > Restore user
+  > OK
+> AD > Groups > Deleted groups
+  > GroupA
+  > Restore group
+  > Yes
+
+
+3.Domainname
+a.Domain name:
+- Default olarak AD ile Primary domain atanir.
+- Her user icin user1@<primary domainname> atanir.
+- Disardan domainname alinabilir.
+
+
+b.Custom domain names:
+- Azure'unverdigi primary domaini burada goruruz. Daha sonra custom domainname de eklenir.
+- Baska bir yerden aldigimiz "dcc.godaddy.com" adresinden domainname alinabilir.
+- Domain name ve recordlari buraya tanitilir.
+- domain provider'a add record secenegi ile TXT record olusturulur. 
+- Domain servera girilecek veriler AD'den alinir.
+> Records > Add
+  > Type: TXT
+  > Host: @
+  > TXT Value: MS:ms71522245
+  > TTL: 1 Hour
+  > Save
+    - Hepsi asagidan alindi.
+
+> AD > Custom domain names > Add custon domain
+  > Custon domain name: cloud2hub.com
+  > Add domain
+    > Record type: TXT 
+    > Alias or host name: @
+    > Destination or points to address: MS:ms71522245
+    > TTL: 3600
+    > Verify
+      - domain serverda record olusturduktan sonra birkac dakika beklenir.
+
+
+c.Custom Domainname'i Primary Yap: 
+- Yeni bir user olusturunca custom veya primary domainname atanabilir: umit.ceylan@cloud2hub.com
+> AD > Custom domain names
+  > cloud2hub.com
+  > Make primary
+
+
+
+4.Licences:
+- 1 ay sonra manuel olarak istemezsek iptal olur. 100 lisans verir.
+> AD > Licences
+  > All products
+  > Try/Buy
+  > Azure AD Premium P2
+  > Free trial
+  > Activate
