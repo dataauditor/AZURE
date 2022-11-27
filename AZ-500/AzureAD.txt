@@ -62,7 +62,66 @@ d.Restoring Groups and Users:
   > Yes
 
 
-3.Domainname
+
+3.Roles:
+- Ilgili Resource/Resurce group/Subscription uzerinden olusturulur.
+- Generic (contributor, reader) role secilebilecegi gibi resource bazinda da olusturulabilir.
+- Asagida ilgili resource uzerinden UserA'ya reader yetkisi veriyoruz.
+
+a.Resource icin User'a Role Atama:
+> VMim > Access control (IAM) > + Add > Add a role assignment
+  > reader
+  > Assign access to: User, group or service principal
+    > Members: Select members
+    > UserA
+    > Select > Next > Review + assign
+    
+> VMim > Access control (IAM) 
+  > Role assignments
+    - Yetkilendirilen user'lar gorulur.
+  > Overview
+    - IP address, subnet, ... gorulmez cunki sadece VM'e giris yetkisi verdik.
+
+b.Resource Group icin User'a Role Atama:
+- Ilgili rg icin gecerli olur.
+> RG > VM-rg > Access control (IAM) > + Add > Add a role assignment
+  > reader
+  > Assign access to: User, group or service principal
+    > Members: Select members
+    > UserA
+    > Select > Next > Review + assign
+
+> VM-rg > Resource visualizer
+  - Ilgili resource'larin arasindaki iliskiyi gosterir.
+  > Overview
+    - IP address, subnet, ... hepsi gorulur.
+
+c.Subscription icin User'a Role Atama:
+- Resource group uzerinden ilgili rg'nin bagli oldugu subscription secilir.
+- Tum subscriptiona uygulanir.
+> Resource groups > VM-rg: Azure subscription 1 > 
+  > Access control (IAM) > + Add > Add a role assignment
+  > reader
+  > Assign access to: User, group or service principal
+    > Members: Select members
+    > UserA
+    > Select > Next > Review + assign
+
+d.Custom Role Olusturma:
+Ilgili rolu olusturup resource, rg ve subs'a atayabiliriz.
+> RG > VM-rg > IAM > + Add > Add custom role
+  > Roloe name: RoleA | Baseline permissions: Start from strach 
+  > + Add permissions: Microsoft compute: Start, Restart, Get
+      - Actions
+    > Add
+  > Create
+
+> RG > VM-rg > IAM > Roles > RoleA
+
+
+
+
+4.Domainname
 a.Domain name:
 - Default olarak AD ile Primary domain atanir.
 - Her user icin user1@<primary domainname> atanir.
